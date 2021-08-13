@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+	<form action="/qr" method="POST">
+		<input type="text" name="userstring" />
+		<input type="submit" value="submit" />
+	</form>
+	<script>
+		const submitButton = $('input[type="submit"]')[0];
+		$(submitButton).on('click', {}, function(event){
+		event.preventDefault();
+		console.log(document.getElementsByTagName('input')[0].value);
+		const postData = { userData: document.getElementsByTagName('input')[0].value }
+		$.post('/qr', postData, function(data) {
+			console.log(data);
+			const bodyEl = $('body')[0];
+			const imgEl = document.createElement('img');
+			$(imgEl).attr('src', data);
+			bodyEl.append(imgEl);
+		})
+	})
+	</script>
+</body>
+</html>
