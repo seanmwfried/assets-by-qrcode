@@ -1,22 +1,18 @@
-const qrcode = require('qrcode');
-const express = require('express');
-const db = require('./database');
-const app = express();
-const port = 3000;
+const express 	= require('express');
+const path		= require('path');
+const db 		= require('./database');
+const qrcode 	= require('qrcode');
+const app 		= express();
+const port 		= 3000;
 
 let database;
 
 initDB();
 
+//qrcode.toDataURL()
+
 app.use(express.static('../frontend/'));
 app.use(express.urlencoded());
-
-app.post('/qr', (req, res) => {
-	qrcode.toDataURL(req.body.userData, function(err, url){
-		console.log(url);
-		res.end(url);
-	})	
-});
 
 app.post('/asset/create', (req, res) => {
 	attemptCreateAsset(req.body).then((result) => {
@@ -25,24 +21,33 @@ app.post('/asset/create', (req, res) => {
 	});
 });
 
-app.post('/login', (req, res) => {
-	attemptLogin(req.body.userName, req.body.password).then(function(result){
-		console.log('/login returning ', result)
-		res.end(`{ result: ${result}}`);
-	});
+app.post('/asset', (req, res) => {
+	getAsset(req.body.assetURL).then((result) => {
+		qrcode.toDataURL(`http://10.0.0.16:${port}/asset/${result.asset._id}`, (err, url) => {
+			result.asset.qrData = url;
+			delete result.asset.password;
+			const resultString = JSON.stringify(result);
+			console.log('/asset returning', result);
+			res.end(resultString);
+		});
+	})
 })
+
+app.get('/asset/*', (req, res) => {
+	res.sendFile(path.join(__dirname, '../frontend/asset.html'));
+});
 
 app.listen(port, () => {
 	console.log(`Listening on localhost:${port}`);
 });
 
-async function attemptLogin(userName, password) {
-	const result = await db.checkPassword(database, userName, password);
+async function attemptCreateAsset(data) {
+	const result = await db.attemptCreateAsset(database, data);
 	return result;
 }
 
-async function attemptCreateAsset(data) {
-	const result = await db.attemptCreateAsset(database, data);
+async function getAsset(assetURL) {
+	const result = await db.getAsset(database, assetURL);
 	return result;
 }
 

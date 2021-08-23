@@ -33,56 +33,31 @@ async function attemptCreateAsset(database, data) {
                 _id: data.urlHandle,
                 name: data.name,
                 password: data.password,
-                fields: data.fields
-            })
-        }
-    }
-}
-
-//Will add new user to database
-//Returns true if successful, false if failed
-async function createUser(database, userName, password) {
-    try {
-        const collection = database.collection('users');
-
-
-        const checkResult = await collection.findOne({userName});
-
-        if(checkResult){
-            console.log('exists');
-            return false;
-        } else {
-            console.log('doesn\'t exist');
-            const addResult = await collection.insertOne({
-                userName: userName,
-                password: password
+                fields: data.fields || null
             });
-            return true;
+            
+            return JSON.stringify({ result: true });
         }
-        
-    } catch(error) {
-        console.dir(error);
-        return false;
-    }
-}
-
-async function checkPassword(database, userName, password) {
-    try {
-        const collection = database.collection('users');
-
-        const result = await collection.findOne({userName});
-        console.log('Password checker: ', result.password, password)
-        return result.password === password;
     } catch(error) {
         console.log(error);
-        return false;
+        return JSON.stringify({ result: false, error });
     }
 }
 
+async function getAsset(database, urlHandle) {
+    try {
+        const collection = database.collection('assets');
+
+        const asset = await collection.findOne({_id: urlHandle})
+        return { result: true, asset };
+    } catch(error) {
+        console.log(error);
+        return JSON.stringify({ result: false, error });
+    }
+}
 
 module.exports = {
     startDB,
-    createUser,
-    checkPassword,
-    attemptCreateAsset
+    attemptCreateAsset,
+    getAsset
 }
