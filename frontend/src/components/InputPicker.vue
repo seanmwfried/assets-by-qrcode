@@ -9,11 +9,23 @@
       <va-input
         label="Field Label"
         v-model="inputName"
-
       />
-      <va-input 
-        :label="inputName + ' Data'"
+      <va-input v-if="selectValue == 'text'"
+        :label="inputLabel"
+        v-model="inputValue"
       />
+      <va-checkbox v-if="selectValue == 'checkbox'"
+        :label="inputLabel"
+        v-model="inputValue"
+      />
+      <div v-if="selectValue == 'date'">
+        <span>{{inputLabel}}</span>
+        <va-date-picker v-if="selectValue == 'date'"
+          :label="inputLabel"
+          color="#fff"
+          v-model="inputValue"
+        />
+      </div>
   </div>
 </template>
 
@@ -23,20 +35,46 @@ export default {
         return {
             options: ['text', 'checkbox', 'date'],
             selectValue: 'text',
-            inputName: ''
+            inputName: '',
+            inputValue: null
         }
     },
 
     computed: {
-        //Create value for rendering third input label to either "Please input name in previous field", etc
+        inputLabel(){
+          if(!this.inputName){
+            return "<No Label>";
+          } else {
+            return this.inputName;
+          }
+        }
+    },
+
+    watch: {
+      selectValue: function (newValue){
+        if(newValue == 'checkbox'){
+          this.inputValue = false;
+        } else {
+          this.inputValue = null;
+        }
+      }
     }
 }
 </script>
 
-<style>
-    .container {
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-    }
+<style scoped>
+  .container {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+  }
+
+  .va-date-picker {
+    --va-date-picker-text-color: white;
+    --va-date-picker-focused-border-color: var(--projectGreen);
+    --va-date-picker-today-text: black;
+    --va-date-picker-today-background: white;
+    --va-date-picker-selected-text: black;
+    --va-date-picker-selected-background: var(--projectGreen);
+  }
 </style>

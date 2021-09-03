@@ -3,11 +3,12 @@
       <va-card dark stripe stripe-color="#baffc9">
           <va-card-title>Create A New Asset</va-card-title>
           <va-card-content class="grid">
-              <InputPicker />
-              <InputPicker />
-              <InputPicker />
-              <InputPicker />
-              <InputPicker />
+              <div>
+                <va-button color="#baffc9" text-color="#000">Add Field</va-button>
+              </div>
+              <div>
+                <va-button color="#baffc9" text-color="#000">Finish</va-button>
+              </div>
               <InputPicker />
           </va-card-content>
       </va-card>
