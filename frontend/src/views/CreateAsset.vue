@@ -79,15 +79,35 @@ export default {
 <style scoped>
   .container {
     color: #fff;
-    width: 100%;
-    max-width: 800px;
-    margin: auto;
+    max-width: 1200px;
+    margin: 25px auto;
   }
 
   .grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 25px;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+  }
+
+  @media screen and (max-width: 1205px) {
+    .container {
+      max-width: 800px;
+    }
+
+    .grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media screen and (max-width: 805px) {
+    .container {
+      width: 90%;
+      max-width: 90%;
+    }
+
+    .grid {
+      grid-template-columns: 1fr;
+    }
   }
 
   .center-button {
@@ -96,5 +116,11 @@ export default {
 
   .asset-name-field-container {
     align-self: center;
+  }
+</style>
+
+<style>
+  .remove-button .va-button__content {
+    padding: 0;
   }
 </style>

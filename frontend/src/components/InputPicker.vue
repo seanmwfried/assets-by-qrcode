@@ -1,14 +1,14 @@
 <template>
-  <div class="container">
+  <div class="ip-container">
     <div class="remove-button-container">
-      <va-button class="remove-button" color="#baffc9" text-color="#000" @click="removeSelf">X</va-button>
+      <va-select
+        color="primary"
+        :options="options"
+        v-model="selectValue"
+        style="color: black;"
+      />
+      <va-button class="remove-button" color="#baffc9" text-color="#000" :rounded="false" @click="removeSelf">X</va-button>
     </div>
-    <va-select
-      color="primary"
-      :options="options"
-      v-model="selectValue"
-      style="color: black;"
-    />
     <va-input
       label="Field Label"
       v-model="inputName"
@@ -17,18 +17,16 @@
       :label="inputLabel"
       v-model="inputValue"
     />
-    <va-checkbox v-if="selectValue == 'checkbox'"
-      :label="inputLabel"
-      v-model="inputValue"
-    />
-    <div v-if="selectValue == 'date'">
-      <span>{{inputLabel}}</span>
-      <va-date-picker v-if="selectValue == 'date'"
+    <div class="checkbox-container" v-if="selectValue == 'checkbox'">
+      <va-checkbox 
         :label="inputLabel"
-        color="#fff"
         v-model="inputValue"
       />
     </div>
+    <va-date-input v-if="selectValue == 'date'"
+      :label="inputLabel"
+      v-model="inputValue"
+    />
   </div>
 </template>
 
@@ -74,26 +72,33 @@ export default {
 </script>
 
 <style scoped>
-  .container {
+  .ip-container {
       display: flex;
       flex-direction: column;
       gap: 5px;
+      background-color: rgb(68, 70, 66);
+      padding: 10px;
+      border-radius: 10px;
   }
 
   .remove-button-container {
-    text-align: right;
+    display: flex;
+    gap: 10px;
   }
 
   .remove-button div {
     padding: 0px;
   }
 
-  .va-date-picker {
-    --va-date-picker-text-color: white;
-    --va-date-picker-focused-border-color: var(--projectGreen);
-    --va-date-picker-today-text: black;
-    --va-date-picker-today-background: white;
-    --va-date-picker-selected-text: black;
-    --va-date-picker-selected-background: var(--projectGreen);
+  .checkbox-container {
+    height: 36px;
+    display: flex;
+    align-items: center;
+  }
+</style>
+
+<style>
+.va-dropdown {
+    width: 100%;
   }
 </style>
