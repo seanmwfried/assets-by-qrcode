@@ -34,42 +34,42 @@
 
 <script>
 export default {
-    props: ['id'],
+  props: ['id'],
 
-    data(){
-        return {
-            options: ['text', 'checkbox', 'date'],
-            selectValue: 'text',
-            inputName: '',
-            inputValue: null
-        }
-    },
+  data(){
+    return {
+      options: ['text', 'checkbox', 'date'],
+      selectValue: 'text',
+      inputName: '',
+      inputValue: null
+    }
+  },
 
-    methods: {
-      removeSelf(){
-        this.$emit('removeSelf', this.id);
-      }
-    },
+  methods: {
+    removeSelf(){
+      this.$emit('removeSelf', this.id);
+    }
+  },
 
-    computed: {
-        inputLabel(){
-          if(!this.inputName){
-            return "<No Label>";
-          } else {
-            return this.inputName;
-          }
-        }
-    },
-
-    watch: {
-      selectValue: function (newValue){
-        if(newValue == 'checkbox'){
-          this.inputValue = false;
-        } else {
-          this.inputValue = null;
-        }
+  computed: {
+    inputLabel(){
+      if(!this.inputName){
+        return "<No Label>";
+      } else {
+        return this.inputName;
       }
     }
+  },
+
+  watch: {
+    selectValue: function (newValue){
+      if(newValue == 'checkbox'){
+        this.inputValue = false;
+      } else {
+        this.inputValue = null;
+      }
+    }
+  }
 }
 </script>
 
