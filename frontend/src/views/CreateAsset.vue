@@ -28,70 +28,70 @@
 </template>
 
 <script>
-import { v4 as uuid } from 'uuid';
-import InputPicker from '../components/InputPicker';
+  import { v4 as uuid } from 'uuid';
+  import InputPicker from '../components/InputPicker';
 
-export default {
-  components: {
-    InputPicker
-  },
-
-  data() {
-    return {
-      inputFields: [],
-      assetName: ''
-    }
-  },
-
-  methods: {
-    addField() {
-      //Create unique ID for easy element removal
-      this.inputFields.push(uuid());
+  export default {
+    components: {
+      InputPicker
     },
 
-    removeField(inID) {
-      const elementIndex = this.inputFields.indexOf(inID);
-      this.inputFields.splice(elementIndex, 1);
+    data() {
+      return {
+        inputFields: [],
+        assetName: ''
+      }
     },
 
-    sendData(){
-      if(!this.assetName){
+    methods: {
+      addField() {
+        //Create unique ID for easy element removal
+        this.inputFields.push(uuid());
+      },
 
-        //TODO: Alert user that assetName is required
-        console.log("Asset Name is empty");
+      removeField(inID) {
+        const elementIndex = this.inputFields.indexOf(inID);
+        this.inputFields.splice(elementIndex, 1);
+      },
 
-      } else{
+      sendData(){
+        if(!this.assetName){
 
-        const formData = [];
-        formData.push({assetName: this.assetName});
-        this.inputFields.forEach(id => {
-          const inputPicker = this.$refs[id];
-          formData.push({
-            inputType:  inputPicker.selectValue,
-            inputLabel: inputPicker.inputName,
-            inputValue: inputPicker.inputValue
-          });
-        })
+          //TODO: Alert user that assetName is required
+          console.log("Asset Name is empty");
 
-        console.log(formData);
+        } else{
 
-        fetch(`http://localhost:3000/asset/create`, {
-          method: 'POST',
-          mode: 'cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(formData)
-        })
-        .then(response => response.json())
-        .then(data => {
-          console.log('Success:', data);
-        })
-        .catch((error) => {
-          console.error('Error:', error);
-        })
+          const formDataArray = [];
+          formDataArray.push({assetName: this.assetName});
+          this.inputFields.forEach(id => {
+            const inputPicker = this.$refs[id];
+            formDataArray.push({
+              inputType:  inputPicker.selectValue,
+              inputLabel: inputPicker.inputName,
+              inputValue: inputPicker.inputValue
+            });
+          })
+
+          const formData = JSON.stringify({data: formDataArray});
+          console.log(formData);
+
+          fetch(`http://localhost:3000/asset/create`, {
+            method: 'POST',
+            mode: 'cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: formData
+          })
+          .then(data => {
+            console.log('Success:', data);
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+          })
+        }
       }
     }
   }
-}
 </script>
 
 <style scoped>

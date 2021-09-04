@@ -13,6 +13,7 @@ initDB();
 
 app.use(express.static('../frontend/'));
 app.use(express.urlencoded());
+app.use(express.json());
 
 //Allow CORS during development so Vue dev server can connect to backend
 //TODO: REMOVEME FOR PRODUCTION

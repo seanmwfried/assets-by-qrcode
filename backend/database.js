@@ -14,21 +14,28 @@ async function startDB(){
 console.log("Connected successfully to server");
 
 /*
-    * Expected data is array where the zero index is metadata & the remaining
-    * data are user created fields
+  * Expected data is array where the zero index is metadata & the remaining
+  * data are user created fields
 */
 async function attemptCreateAsset(database, data) {
   try {
     const collection = database.collection('assets');
 
-    const fields = JSON.stringify(data.unshift());
+    const assetName = data.data[0].assetName;
+    data.data.pop();
 
-    const addAssetResult = await collection.insertOne({
-        name: data.assetName,
-        fields: fields || null
-    });
+    const fields = JSON.stringify(data.data);
+    const toDBData = {
+      name: data.data[0].assetName,
+      fields: fields || null
+    }
+
+    const addAssetResult = await collection.insertOne(toDBData);
     
-    return JSON.stringify({ result: true });
+    return JSON.stringify({ 
+      result: true,
+      assetID: addAssetResult.insertedId.toString()
+    });
   } catch(error) {
     console.log(error);
     return JSON.stringify({ result: false, error });
