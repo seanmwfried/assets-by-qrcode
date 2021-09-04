@@ -1,9 +1,11 @@
-const express 	= require('express');
-const path		= require('path');
-const db 		= require('./database');
-const qrcode 	= require('qrcode');
-const app 		= express();
-const port 		= 3000;
+const express 	    = require('express');
+const path		      = require('path');
+const db 		        = require('./database');
+const qrcode 	      = require('qrcode');
+const app 		      = express();
+const ip            = '192.168.1.69';
+const backendPort   = 3000;
+const frontendPort  = 8080;
 
 let database;
 
@@ -31,10 +33,10 @@ app.post('/asset/create', (req, res) => {
 });
 
 app.post('/asset', (req, res) => {
-	getAsset(req.body.assetURL).then((result) => {
-		qrcode.toDataURL(`http://10.0.0.16:${port}/asset/${result.asset._id}`, (err, url) => {
+  console.log(req.body);
+	getAsset(req.body.assetID).then((result) => {
+		qrcode.toDataURL(`http://${ip}:${frontendPort}/asset/${result.asset._id.toString()}`, (err, url) => {
 			result.asset.qrData = url;
-			delete result.asset.password;
 			const resultString = JSON.stringify(result);
 			console.log('/asset returning', result);
 			res.end(resultString);
@@ -42,12 +44,10 @@ app.post('/asset', (req, res) => {
 	})
 })
 
-app.get('/asset/*', (req, res) => {
-	res.sendFile(path.join(__dirname, '../frontend/asset.html'));
-});
+//TODO: Serve Vue app on "/" route
 
-app.listen(port, () => {
-	console.log(`Listening on localhost:${port}`);
+app.listen(backendPort, () => {
+	console.log(`Listening on localhost:${backendPort}`);
 });
 
 async function attemptCreateAsset(data) {

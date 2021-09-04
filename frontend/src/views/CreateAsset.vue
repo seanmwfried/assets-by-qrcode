@@ -88,6 +88,9 @@
           .then(data => {
             if(data.result){
               this.$router.push(`/asset/${data.assetID}`);
+            } else {
+              console.log(data);
+              //TODO: Handle failure
             }
           })
           .catch((error) => {

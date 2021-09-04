@@ -1,4 +1,5 @@
-const { MongoClient } = require('mongodb');
+const mongodb = require('mongodb');
+const MongoClient = mongodb.MongoClient;
 
 //Connection URI
 const uri = "mongodb://localhost:27017/qrAssets";
@@ -22,11 +23,11 @@ async function attemptCreateAsset(database, data) {
     const collection = database.collection('assets');
 
     const assetName = data.data[0].assetName;
-    data.data.pop();
+    data.data.shift();
 
     const fields = JSON.stringify(data.data);
     const toDBData = {
-      name: data.data[0].assetName,
+      name: assetName,
       fields: fields || null
     }
 
@@ -42,11 +43,12 @@ async function attemptCreateAsset(database, data) {
   }
 }
 
-async function getAsset(database, urlHandle) {
+async function getAsset(database, assetID) {
   try {
     const collection = database.collection('assets');
 
-    const asset = await collection.findOne({_id: urlHandle})
+    const asset = await collection.findOne({_id: new mongodb.ObjectId(assetID)});
+    //Don't stringify this time as QR data needs to be added later
     return { result: true, asset };
 
   } catch(error) {
