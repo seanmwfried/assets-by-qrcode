@@ -74,7 +74,6 @@
           })
 
           const formData = JSON.stringify({data: formDataArray});
-          console.log(formData);
 
           fetch(`http://localhost:3000/asset/create`, {
             method: 'POST',
@@ -82,11 +81,18 @@
             headers: { 'Content-Type': 'application/json' },
             body: formData
           })
+          .then(response => {
+            console.log(response)
+            return response.json()
+          })
           .then(data => {
-            console.log('Success:', data);
+            if(data.result){
+              this.$router.push(`/asset/${data.assetID}`);
+            }
           })
           .catch((error) => {
-            console.error('Error:', error);
+            //TODO: Alert user of error, please try again
+            console.error('Error submitting asset data:', error);
           })
         }
       }

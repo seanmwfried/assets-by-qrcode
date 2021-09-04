@@ -26,7 +26,7 @@ app.use(function(req, res, next) {
 app.post('/asset/create', (req, res) => {
 	attemptCreateAsset(req.body).then((result) => {
 		console.log('/asset/create returning', result);
-		res.end(`{result: ${result}}`)
+		res.end(result);
 	});
 });
 
