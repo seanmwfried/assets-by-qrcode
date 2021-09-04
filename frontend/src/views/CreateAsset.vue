@@ -56,9 +56,12 @@ export default {
 
     sendData(){
       if(!this.assetName){
+
         //TODO: Alert user that assetName is required
         console.log("Asset Name is empty");
+
       } else{
+
         const formData = [];
         formData.push({assetName: this.assetName});
         this.inputFields.forEach(id => {
@@ -69,7 +72,22 @@ export default {
             inputValue: inputPicker.inputValue
           });
         })
-        //TODO: Send info to backend
+
+        console.log(formData);
+
+        fetch(`http://localhost:3000/asset/create`, {
+          method: 'POST',
+          mode: 'cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Success:', data);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        })
       }
     }
   }

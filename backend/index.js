@@ -14,6 +14,14 @@ initDB();
 app.use(express.static('../frontend/'));
 app.use(express.urlencoded());
 
+//Allow CORS during development so Vue dev server can connect to backend
+//TODO: REMOVEME FOR PRODUCTION
+app.use(function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', "*");
+  res.header('Access-Control-Allow-Headers', "*");
+  next();
+});
+
 app.post('/asset/create', (req, res) => {
 	attemptCreateAsset(req.body).then((result) => {
 		console.log('/asset/create returning', result);
