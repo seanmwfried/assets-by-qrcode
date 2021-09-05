@@ -1,18 +1,18 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Landing from '../views/Landing';
-import CreateAsset from '../views/CreateAsset';
-import AssetPage from '../views/AssetPage';
+import AssetCreate from '../views/AssetCreate';
+import AssetView from '../views/AssetView';
 
 const routes = [
   {
     path: '/create',
     name: 'Asset Creation',
-    component: CreateAsset
+    component: AssetCreate
   },
   {
     path: '/asset/:assetID',
     name: 'Asset Information',
-    component: AssetPage,
+    component: AssetView,
     props: true
   },
   {
