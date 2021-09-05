@@ -1,20 +1,5 @@
 <template>
   <div class="container">
-    <va-modal v-model="showModal" hide-default-actions>
-      <template #header>
-        <span class="error-heading">ERROR</span>
-      </template>
-      <slot>
-        <p class="error-message">
-          {{ errorMessage }}
-        </p>
-      </slot>
-      <template #footer>
-        <div class="error-action">
-          <va-button color="#baffc9" text-color="#000" @click="showModal = false">OK</va-button>
-        </div>
-      </template>
-    </va-modal>
     <va-card dark stripe stripe-color="#baffc9">
       <va-card-title>Create A New Asset</va-card-title>
       <va-card-content class="grid">
@@ -86,14 +71,11 @@
       sendData(){
         //Check required fields for proper data
         if(!this.assetName){
-          this.errorMessage = "Asset name is required. Please enter an asset name to continue."
-          this.showModal = true;
+          this.$store.dispatch('setErrorMessageAndShowModal', 'Asset name is required. Please enter an asset name to continue.');
         } else if(!this.assetPassword) {
-          this.errorMessage = "Asset password is required. Please enter an asset password and confirm it to continue."
-          this.showModal = true;
+          this.$store.dispatch('setErrorMessageAndShowModal', 'Asset password is required. Please enter an asset password and confirm it to continue.');
         } else if(this.assetPassword !== this.assetPasswordRepeat){
-          this.errorMessage = "Passwords do not match. Please try again."
-          this.showModal = true;
+          this.$store.dispatch('setErrorMessageAndShowModal', 'Passwords do not match. Please try again.');
         } else {
           //Gather data to send
           const formDataArray = [];
@@ -124,9 +106,8 @@
             if(data.result){
               this.$router.push(`/asset/${data.assetID}`);
             } else {
-              this.errorMessage = "There was an error. Please try again."
+              this.$store.dispatch('setErrorMessageAndShowModal', 'There was an error. Please try again.');
               console.log(data);
-              this.showModal = true;
             }
           })
           .catch((error) => {
@@ -184,27 +165,5 @@
     gap: 5px;
     padding: 10px;
     border-radius: 10px;
-  }
-
-  .error-heading {
-    color: red;
-    font-size: 2em;
-  }
-  
-  .error-message {
-    margin-top: 10px;
-  }
-
-  .error-action {
-    text-align: right;
-    width: 100%;
-  }
-</style>
-
-<style>
-  /* Color prop seems bugged on Vuestic-UI modal component */
-  /* Globally overriding for now */
-  .va-modal__dialog {
-    --va-modal-dialog-background: rgb(68, 70, 66);
   }
 </style>

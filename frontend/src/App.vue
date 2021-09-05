@@ -1,22 +1,20 @@
 <template>
   <div id='page'>
     <NavBar />
+    <ErrorModal />
     <router-view/>
   </div>
 </template>
 
 <script>
 import NavBar from './components/NavBar';
+import ErrorModal from './components/ErrorModal';
 
 export default {
   components: {
-    NavBar
-  },
-
-  // setup() {
-  //   return {
-  //   }
-  // }
+    NavBar,
+    ErrorModal
+  }
 }
 </script>
 

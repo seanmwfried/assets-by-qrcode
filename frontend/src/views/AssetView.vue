@@ -11,7 +11,7 @@
             {{assetName}}
           </div>
           <div class="asset-actions">
-            <va-button color="#baffc9" text-color="#000">Modify</va-button>
+            <va-button color="#baffc9" text-color="#000" :to="'/modify/' + assetID">Modify</va-button>
             <va-button color="#baffc9" text-color="#000">Delete</va-button>
           </div>
         </div>
