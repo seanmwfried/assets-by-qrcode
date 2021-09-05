@@ -30,9 +30,12 @@
             v-model="assetName"
           />
           <va-input
+            type="password"
             label="Asset Password (Required)"
             v-model="assetPassword"
-          /><va-input
+          />
+          <va-input
+            type="password"
             label="Repeat Password"
             v-model="assetPasswordRepeat"
           />
