@@ -2,7 +2,7 @@
   <va-card class="asset-container" dark stripe stripe-color="#baffc9">
     <va-card-content v-if="loaded">
       <div class="asset-banner">
-        <QRCode :dataURI="qrCodeURI" />
+        <QRCode class="qrcode" :dataURI="qrCodeURI" />
         <div class="asset-name-container">
           <div class="asset-name-label">
             Asset Name
@@ -108,6 +108,7 @@
 
   .asset-name-text {
     font-size: 2em;
+    margin-bottom: 15px;
   }
 
   .asset-actions {
@@ -151,6 +152,17 @@
 
     .asset-info-bits-container {
       grid-template-columns: 1fr;
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    .asset-banner {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .asset-name-container {
+      order: -1;
     }
   }
 </style>
