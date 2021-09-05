@@ -1,5 +1,6 @@
 const mongodb = require('mongodb');
 const MongoClient = mongodb.MongoClient;
+const crypto = require('crypto');
 
 //Connection URI
 const uri = "mongodb://localhost:27017/qrAssets";
@@ -23,11 +24,13 @@ async function attemptCreateAsset(database, data) {
     const collection = database.collection('assets');
 
     const assetName = data.data[0].assetName;
+    const assetPassword = crypto.createHash('sha256').update(data.data[0].assetPassword).digest('base64');
     data.data.shift();
 
     const fields = JSON.stringify(data.data);
     const toDBData = {
       name: assetName,
+      password: assetPassword,
       fields: fields || null
     }
 
