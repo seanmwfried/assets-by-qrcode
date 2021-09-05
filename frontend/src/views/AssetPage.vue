@@ -1,24 +1,31 @@
 <template>
-  <va-card dark stripe stripe-color="#baffc9">
+  <va-card class="asset-container" dark stripe stripe-color="#baffc9">
     <va-card-content v-if="loaded">
       <div class="asset-banner">
         <QRCode :dataURI="qrCodeURI" />
         <div class="asset-name-container">
-          <span class="asset-name-label">
+          <div class="asset-name-label">
             Asset Name
-          </span>
-          <span class="asset-name-text">
+          </div>
+          <div class="asset-name-text">
             {{assetName}}
-          </span>
+          </div>
+          <div class="asset-actions">
+            <va-button color="#baffc9" text-color="#000">Modify</va-button>
+            <va-button color="#baffc9" text-color="#000">Delete</va-button>
+          </div>
         </div>
       </div>
-      <AssetInfoBit 
-        v-for="(field, i) in fields" 
-        :key="i"
-        :type="field.inputType"
-        :label="field.inputLabel"
-        :value="field.inputValue"
-      />
+      <div class="divider"></div>
+      <div class="asset-info-bits-container">
+        <AssetInfoBit 
+          v-for="(field, i) in fields" 
+          :key="i"
+          :type="field.inputType"
+          :label="field.inputLabel"
+          :value="field.inputValue"
+        />
+      </div>
     </va-card-content>
   </va-card>
 </template>
@@ -75,7 +82,75 @@
 </script>
 
 <style scoped>
+  .asset-container {
+    margin: 25px auto;
+    width: 100%;
+    max-width: 1200px;
+  }
+
   .asset-banner {
     display: flex;
+    gap: 10px;
+  }
+
+  .asset-name-container {
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(68, 70, 66);
+    width: 100%;
+    border-radius: 10px;
+    padding: 25px;
+  }
+
+  .asset-name-label {
+    color: #ccc;
+  }
+
+  .asset-name-text {
+    font-size: 2em;
+  }
+
+  .asset-actions {
+    display: flex;
+    height: 100%;
+    justify-content: flex-end;
+    align-items: flex-end;
+    gap: 10px;
+  }
+
+  .divider {
+    background-color: var(--projectGreen);
+    height: 5px;
+    width: 100%;
+    border-radius: 3px;
+    margin: 10px auto;
+  }
+
+  .asset-info-bits-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    margin-top: 20px;
+  }
+
+  @media screen and (max-width: 1205px) {
+    .asset-container {
+      max-width: 800px;
+    }
+
+    .asset-info-bits-container {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media screen and (max-width: 805px) {
+    .asset-container {
+      width: 90%;
+      max-width: 90%;
+    }
+
+    .asset-info-bits-container {
+      grid-template-columns: 1fr;
+    }
   }
 </style>
