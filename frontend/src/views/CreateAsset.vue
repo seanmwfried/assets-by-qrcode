@@ -75,7 +75,7 @@
 
           const formData = JSON.stringify({data: formDataArray});
 
-          fetch(`http://localhost:3000/asset/create`, {
+          fetch(`${process.env.VUE_APP_BACKEND_URL}/asset/create`, {
             method: 'POST',
             mode: 'cors',
             headers: { 'Content-Type': 'application/json' },

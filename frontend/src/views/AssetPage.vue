@@ -34,6 +34,8 @@
   import AssetInfoBit from '../components/AssetInfoBit';
   import QRCode from '../components/QRCode';
 
+  console.log(process.env);
+
   export default {
     props: ['assetID'],
 
@@ -53,7 +55,7 @@
 
     mounted() {
       const assetData = { assetID: this.assetID };
-      fetch(`http://localhost:3000/asset`, {
+      fetch(`${process.env.VUE_APP_BACKEND_URL}/asset`, {
               method: 'POST',
               mode: 'cors',
               headers: { 'Content-Type': 'application/json' },

@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import Landing from '../views/Landing';
 import CreateAsset from '../views/CreateAsset';
 import AssetPage from '../views/AssetPage';
@@ -19,11 +19,15 @@ const routes = [
     path: '/',
     name: 'Landing',
     component: Landing
-  }
+  },
+  // {
+  //   path: '*',
+  //   redirect: '/'
+  // }
 ]
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes
 })
 
