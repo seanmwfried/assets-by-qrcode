@@ -35,6 +35,9 @@ app.post('/asset/create', (req, res) => {
 app.post('/asset', (req, res) => {
   console.log(req.body);
 	getAsset(req.body.assetID).then((result) => {
+    //Don't send password to front end!
+    delete result.asset.password;
+    //Create QRCode then send response
 		qrcode.toDataURL(`http://${ip}:${frontendPort}/asset/${result.asset._id.toString()}`, (err, url) => {
 			result.asset.qrData = url;
 			const resultString = JSON.stringify(result);

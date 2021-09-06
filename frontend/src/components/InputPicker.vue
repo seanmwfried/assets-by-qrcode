@@ -32,7 +32,7 @@
 
 <script>
 export default {
-  props: ['id'],
+  props: ['id', 'inData'],
 
   data(){
     return {
@@ -66,6 +66,14 @@ export default {
       } else {
         this.inputValue = null;
       }
+    }
+  },
+
+  mounted(){
+    if(this.inData){
+      this.selectValue = this.inData.inputType;
+      this.inputName   = this.inData.inputLabel;
+      this.inputValue  = this.inData.inputValue;
     }
   }
 }

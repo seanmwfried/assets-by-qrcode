@@ -51,9 +51,7 @@
         inputFields: [],
         assetName: '',
         assetPassword: '',
-        assetPasswordRepeat: '',
-        showModal: false,
-        errorMessage: "Default error message"
+        assetPasswordRepeat: ''
       }
     },
 
