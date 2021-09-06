@@ -1,5 +1,25 @@
 <template>
   <div class="container">
+    <va-modal 
+      v-model="showModal" 
+      @close="passwordInput = ''" 
+      hide-default-actions
+      ref="modal"
+    >
+      <slot>
+        <va-input
+          type="password"
+          v-model="passwordInput"
+          :label="assetName + ' Asset Password'"
+        />
+      </slot>
+      <template #footer>
+        <div class="button-container">
+          <va-button outline text-color="#bbb" color="#bbb" @click="$refs.modal.hide()">Cancel</va-button>
+          <va-button color="#baffc9" text-color="#000" @click="sendUpdate">OK</va-button>
+        </div>
+      </template>
+    </va-modal>
     <va-card v-if="loaded" dark stripe stripe-color="#baffc9">
       <va-card-title>Modify {{ assetName }}</va-card-title>
       <va-card-content class="grid">
@@ -7,7 +27,7 @@
           <va-button color="#baffc9" text-color="#000" @click="addField">Add Field</va-button>
         </div>
         <div class="center-button">
-          <va-button color="#baffc9" text-color="#000" @click="promptPasswordForUpdate">Update</va-button>
+          <va-button color="#baffc9" text-color="#000" @click="showModal = true">Update</va-button>
         </div>
         <div class="asset-required-fields-container">
           <va-input
@@ -43,13 +63,51 @@
       return {
         loaded: false,
         assetName: '',
-        fields: []
+        fields: [],
+        showModal: false,
+        passwordInput: '',
       }
     },
 
     methods: {
       removeField(inID) {
         this.fields = this.fields.filter(field => field.id !== inID);
+      },
+
+      sendUpdate() {
+        //Gather data to send
+        const formDataArray = [];
+        formDataArray.push({ assetName: this.assetName, passwordAttempt: this.passwordInput });
+        this.fields.forEach(field => {
+          const inputPicker = this.$refs[field.id];
+          formDataArray.push({
+            inputType:  inputPicker.selectValue,
+            inputLabel: inputPicker.inputName,
+            inputValue: inputPicker.inputValue
+          });
+        });
+
+        console.log(formDataArray);
+
+        const formData = JSON.stringify({data: formDataArray});
+
+        fetch(`${process.env.VUE_APP_BACKEND_URL}/modify`, {
+              method: 'POST',
+              mode: 'cors',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(formData)
+        })
+        .then(response => response.json())
+        .then(data => {
+          if(data.result){
+            this.$router.push(`/asset/${data.assetID}`);
+          } else {
+            this.$store.dispatch('setErrorMessageAndShowModal', 'There was an error retrieving asset data. Please try again later.');
+          }
+        })
+        .catch(() => {
+            this.$store.dispatch('setErrorMessageAndShowModal', 'There was an error retrieving asset data. Please try again later.');
+        });
       }
     },
 
@@ -64,7 +122,6 @@
       .then(response => response.json())
       .then(data => {
         if(data.result){
-          console.log(data);
           // Fill out data
           this.loaded = true;
           this.assetName = data.asset.name;
@@ -128,5 +185,12 @@
     align-items: center;
     padding: 10px;
     border-radius: 10px;
+  }
+
+  .button-container {
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
   }
 </style>
