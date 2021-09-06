@@ -99,7 +99,6 @@
             body: formData
           })
           .then(response => {
-            console.log(response)
             return response.json()
           })
           .then(data => {
@@ -107,13 +106,10 @@
               this.$router.push(`/asset/${data.assetID}`);
             } else {
               this.$store.dispatch('setErrorMessageAndShowModal', 'There was an error. Please try again.');
-              console.log(data);
             }
           })
-          .catch((error) => {
-            this.errorMessage = "There was an error. Please try again."
-            console.error('Error submitting asset data:', error);
-            this.showModal = true;
+          .catch(() => {
+            this.$store.dispatch('setErrorMessageAndShowModal', 'There was an error. Please try again.');
           })
         }
       }

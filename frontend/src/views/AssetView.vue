@@ -34,8 +34,6 @@
   import AssetInfoBit from '../components/AssetInfoBit';
   import QRCode from '../components/QRCode';
 
-  console.log(process.env);
-
   export default {
     props: ['assetID'],
 
@@ -65,19 +63,16 @@
       .then(data => {
         if(data.result){
           // Fill out data
-          console.log(data);
           this.loaded = true;
           this.qrCodeURI = data.asset.qrData;
           this.assetName = data.asset.name;
           this.fields = JSON.parse(data.asset.fields);
         } else {
-          console.log(data);
-          //TODO: Handle failure
+          this.$store.dispatch('setErrorMessageAndShowModal', 'There was an error retrieving asset data. Please try again later.');
         }
       })
-      .catch((error) => {
-        //TODO: Alert user of error, please try again
-        console.error('Error submitting asset data:', error);
+      .catch(() => {
+          this.$store.dispatch('setErrorMessageAndShowModal', 'There was an error retrieving asset data. Please try again later.');
       })
     }
   }
