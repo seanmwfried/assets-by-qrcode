@@ -74,7 +74,15 @@ export default {
     if(this.inData){
       this.selectValue = this.inData.inputType || 'text';
       this.inputName   = this.inData.inputLabel || '';
-      this.inputValue  = this.inData.inputValue || '';
+      if(this.inData.inputType === 'date'){
+        console.log(this.inData.inputValue);
+        console.log(new Date(this.inData.inputValue));
+        console.log(new Date(this.inData.inputValue).toISOString());
+        //va-date-input doesn't seem to like setting the value immediately
+        setTimeout(() => {this.inputValue = new Date(this.inData.inputValue);}, 50);
+      } else {
+        this.inputValue  = this.inData.inputValue || '';
+      }
     } else {
       this.selectValue = 'text';
       this.inputName   = '';

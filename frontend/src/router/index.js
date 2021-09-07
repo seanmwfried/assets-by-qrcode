@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Landing from '../views/Landing';
-import AssetCreate from '../views/AssetCreate';
-import AssetView from '../views/AssetView';
-import AssetModify from '../views/AssetModify';
+import Landing        from '../views/Landing';
+import AssetCreate    from '../views/AssetCreate';
+import AssetView      from '../views/AssetView';
+import AssetModify    from '../views/AssetModify';
+import AssetDeleted   from '../views/AssetDeleted';
 
 const routes = [
   {
@@ -15,6 +16,11 @@ const routes = [
     name: 'Asset Modification',
     component: AssetModify,
     props: true
+  },
+  {
+    path: '/asset/deleted',
+    name: 'Asset Deleted',
+    component: AssetDeleted,
   },
   {
     path: '/asset/:assetID',

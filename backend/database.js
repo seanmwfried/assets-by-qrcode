@@ -85,9 +85,8 @@ async function deleteAsset(database, data) {
   try {
     const collection = database.collection('assets');
 
-    const assetName = data[0].assetName;
-    const passwordAttempt = crypto.createHash('sha256').update(data[0].passwordAttempt).digest('base64');
-    const _id = new mongodb.ObjectId(data[0]._id);
+    const passwordAttempt = crypto.createHash('sha256').update(data.passwordAttempt).digest('base64');
+    const _id = new mongodb.ObjectId(data._id);
 
     const asset = await collection.findOne({ _id });
 
@@ -125,5 +124,6 @@ module.exports = {
   startDB,
   createAsset,
   modifyAsset,
+  deleteAsset,
   getAsset
 }

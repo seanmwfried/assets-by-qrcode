@@ -77,7 +77,7 @@ async function modifyAsset(data) {
 }
 
 async function deleteAsset(data) {
-  const result = await db.deleteAsset(Database, data);
+  const result = await db.deleteAsset(database, data);
   return result;
 }
 

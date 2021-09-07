@@ -91,8 +91,12 @@
         })
         .then(response => response.json())
         .then(data => {
-          if(data.result){
-            this.$router.push(`/asset/create`);
+          if(data){
+            if(data.result){
+              this.$router.push(`/asset/deleted`);
+            } else {
+              this.$store.dispatch('setErrorMessageAndShowModal', data.error);
+            }
           } else {
             this.$store.dispatch('setErrorMessageAndShowModal', 'There was an error retrieving asset data. Please try again later.');
           }
@@ -113,12 +117,16 @@
       })
       .then(response => response.json())
       .then(data => {
-        if(data.result){
-          // Fill out data
-          this.loaded = true;
-          this.qrCodeURI = data.asset.qrData;
-          this.assetName = data.asset.name;
-          this.fields = JSON.parse(data.asset.fields);
+        if(data){
+          if(data.result){
+            // Fill out data
+            this.loaded = true;
+            this.qrCodeURI = data.asset.qrData;
+            this.assetName = data.asset.name;
+            this.fields = JSON.parse(data.asset.fields);
+          } else {
+            this.$store.dispatch('setErrorMessageAndShowModal', data.error);
+          }
         } else {
           this.$store.dispatch('setErrorMessageAndShowModal', 'There was an error retrieving asset data. Please try again later.');
         }
