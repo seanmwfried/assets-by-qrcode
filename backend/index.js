@@ -26,7 +26,7 @@ app.use(function(req, res, next) {
 });
 
 app.post('/asset/create', (req, res) => {
-	attemptCreateAsset(req.body).then((result) => {
+	createAsset(req.body).then((result) => {
 		console.log('/asset/create returning', result);
 		res.end(result);
 	});
@@ -45,7 +45,15 @@ app.post('/asset', (req, res) => {
 			res.end(resultString);
 		});
 	})
-})
+});
+
+app.post('/modify', (req, res) => {
+  console.log(req.body);
+	modifyAsset(req.body).then((result) => {
+    console.log('/asset returning', result);
+		res.end(result);
+	})
+});
 
 //TODO: Serve Vue app on "/" route
 
@@ -53,9 +61,14 @@ app.listen(backendPort, () => {
 	console.log(`Listening on localhost:${backendPort}`);
 });
 
-async function attemptCreateAsset(data) {
-	const result = await db.attemptCreateAsset(database, data);
+async function createAsset(data) {
+	const result = await db.createAsset(database, data);
 	return result;
+}
+
+async function modifyAsset(data) {
+  const result = await db.modifyAsset(database, data);
+  return result;
 }
 
 async function getAsset(assetURL) {

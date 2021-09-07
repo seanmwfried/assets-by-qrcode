@@ -19,15 +19,15 @@ console.log("Connected successfully to server");
   * Expected data is array where the zero index is metadata & the remaining
   * data are user created fields
 */
-async function attemptCreateAsset(database, data) {
+async function createAsset(database, data) {
   try {
     const collection = database.collection('assets');
 
-    const assetName = data.data[0].assetName;
-    const assetPassword = crypto.createHash('sha256').update(data.data[0].assetPassword).digest('base64');
-    data.data.shift();
+    const assetName = data[0].assetName;
+    const assetPassword = crypto.createHash('sha256').update(data[0].assetPassword).digest('base64');
+    data.shift();
 
-    const fields = JSON.stringify(data.data);
+    const fields = JSON.stringify(data);
     const toDBData = {
       name: assetName,
       password: assetPassword,
@@ -40,6 +40,41 @@ async function attemptCreateAsset(database, data) {
       result: true,
       assetID: addAssetResult.insertedId.toString()
     });
+  } catch(error) {
+    console.log(error);
+    return JSON.stringify({ result: false, error });
+  }
+}
+
+async function modifyAsset(database, data) {
+  try {
+    const collection = database.collection('assets');
+
+    const assetName = data[0].assetName;
+    const passwordAttempt = crypto.createHash('sha256').update(data[0].passwordAttempt).digest('base64');
+    const _id = new mongodb.ObjectId(data[0]._id);
+    data.shift();
+
+    const asset = await collection.findOne({ _id });
+
+    if(passwordAttempt !== asset.password){
+      return JSON.stringify({ result: false, error: 'Incorrect password.'});
+    } else {
+
+      const fields = JSON.stringify(data);
+
+      const update = await collection.updateOne({ _id }, {
+        $set: {
+          name: assetName,
+          fields: fields || null
+        }
+      });
+      
+      return JSON.stringify({ 
+        result: true
+      });
+    }
+
   } catch(error) {
     console.log(error);
     return JSON.stringify({ result: false, error });
@@ -62,6 +97,7 @@ async function getAsset(database, assetID) {
 
 module.exports = {
   startDB,
-  attemptCreateAsset,
+  createAsset,
+  modifyAsset,
   getAsset
 }

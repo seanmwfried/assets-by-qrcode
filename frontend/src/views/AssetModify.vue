@@ -74,10 +74,19 @@
         this.fields = this.fields.filter(field => field.id !== inID);
       },
 
+      addField(){
+        this.fields.push({ id: uuid() });
+      },
+
       sendUpdate() {
+        this.showModal = false;
         //Gather data to send
         const formDataArray = [];
-        formDataArray.push({ assetName: this.assetName, passwordAttempt: this.passwordInput });
+        formDataArray.push({ 
+          assetName: this.assetName, 
+          passwordAttempt: this.passwordInput,
+          _id: this.assetID
+        });
         this.fields.forEach(field => {
           const inputPicker = this.$refs[field.id];
           formDataArray.push({
@@ -89,18 +98,18 @@
 
         console.log(formDataArray);
 
-        const formData = JSON.stringify({data: formDataArray});
+        const formData = JSON.stringify(formDataArray);
 
         fetch(`${process.env.VUE_APP_BACKEND_URL}/modify`, {
               method: 'POST',
               mode: 'cors',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(formData)
+              body: formData
         })
         .then(response => response.json())
         .then(data => {
           if(data.result){
-            this.$router.push(`/asset/${data.assetID}`);
+            this.$router.push(`/asset/${this.assetID}`);
           } else {
             this.$store.dispatch('setErrorMessageAndShowModal', 'There was an error retrieving asset data. Please try again later.');
           }

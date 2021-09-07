@@ -87,7 +87,7 @@
             });
           })
 
-          const formData = JSON.stringify({data: formDataArray});
+          const formData = JSON.stringify(formDataArray);
 
           //Send data & handle response
           fetch(`${process.env.VUE_APP_BACKEND_URL}/asset/create`, {

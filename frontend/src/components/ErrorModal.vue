@@ -20,6 +20,8 @@
   import { mapGetters } from 'vuex';
 
   export default {
+    props: ['z-index'],
+
     computed: {
       ...mapGetters([
         'errorMessage',

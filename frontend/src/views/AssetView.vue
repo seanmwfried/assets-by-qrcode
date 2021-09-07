@@ -1,5 +1,25 @@
 <template>
   <va-card class="asset-container" dark stripe stripe-color="#baffc9">
+    <va-modal 
+      v-model="showModal" 
+      @close="passwordInput = ''" 
+      hide-default-actions
+      ref="modal"
+    >
+      <slot>
+        <va-input
+          type="password"
+          v-model="passwordInput"
+          :label="assetName + ' Asset Password'"
+        />
+      </slot>
+      <template #footer>
+        <div class="button-container">
+          <va-button outline text-color="#bbb" color="#bbb" @click="$refs.modal.hide()">Cancel</va-button>
+          <va-button color="#ffb3ba" text-color="#000" @click="deleteAsset">DELETE</va-button>
+        </div>
+      </template>
+    </va-modal>
     <va-card-content v-if="loaded">
       <div class="asset-banner">
         <QRCode class="qrcode" :dataURI="qrCodeURI" />
@@ -12,7 +32,7 @@
           </div>
           <div class="asset-actions">
             <va-button color="#baffc9" text-color="#000" :to="'/modify/' + assetID">Modify</va-button>
-            <va-button color="#baffc9" text-color="#000">Delete</va-button>
+            <va-button color="#baffc9" text-color="#000" @click="showModal = true">Delete</va-button>
           </div>
         </div>
       </div>
@@ -47,7 +67,39 @@
         loaded: false,
         qrCodeURI: '',
         assetName: '<No Name>',
-        fields: []
+        fields: [],
+        showModal: false,
+        passwordInput: ''
+      }
+    },
+
+    methods: {
+      deleteAsset(){
+        this.showModal = false;
+        //Send asset ID and password attempt
+        
+        const formData = JSON.stringify({
+          _id: this.assetID,
+          passwordAttempt: this.passwordInput
+        });
+
+        fetch(`${process.env.VUE_APP_BACKEND_URL}/asset/delete`, {
+              method: 'POST',
+              mode: 'cors',
+              headers: { 'Content-Type': 'application/json' },
+              body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+          if(data.result){
+            this.$router.push(`/asset/create`);
+          } else {
+            this.$store.dispatch('setErrorMessageAndShowModal', 'There was an error retrieving asset data. Please try again later.');
+          }
+        })
+        .catch(() => {
+            this.$store.dispatch('setErrorMessageAndShowModal', 'There was an error retrieving asset data. Please try again later.');
+        });
       }
     },
 
@@ -161,5 +213,12 @@
     .asset-name-container {
       order: -1;
     }
+  }
+
+  .button-container {
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
   }
 </style>
