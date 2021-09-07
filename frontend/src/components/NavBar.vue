@@ -1,7 +1,11 @@
 <template>
   <va-navbar color="#baffc9" shape class="nav">
       <template #left>
-          <va-navbar-item class="logo">ItemDex</va-navbar-item>
+          <va-navbar-item>
+            <va-button class="logo" flat color="rgb(38, 40, 36)" to="/">
+              ITEMDEX
+            </va-button>
+          </va-navbar-item>
       </template>
       <template #right>
           <va-navbar-item>
