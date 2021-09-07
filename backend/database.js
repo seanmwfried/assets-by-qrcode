@@ -81,6 +81,32 @@ async function modifyAsset(database, data) {
   }
 }
 
+async function deleteAsset(database, data) {
+  try {
+    const collection = database.collection('assets');
+
+    const assetName = data[0].assetName;
+    const passwordAttempt = crypto.createHash('sha256').update(data[0].passwordAttempt).digest('base64');
+    const _id = new mongodb.ObjectId(data[0]._id);
+
+    const asset = await collection.findOne({ _id });
+
+    if(passwordAttempt !== asset.password){
+      return JSON.stringify({ result: false, error: 'Incorrect password.'});
+    } else {
+      await collection.deleteOne({ _id });
+      
+      return JSON.stringify({ 
+        result: true
+      });
+    }
+
+  } catch(error) {
+    console.log(error);
+    return JSON.stringify({ result: false, error });
+  }
+}
+
 async function getAsset(database, assetID) {
   try {
     const collection = database.collection('assets');

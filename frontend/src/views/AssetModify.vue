@@ -100,7 +100,7 @@
 
         const formData = JSON.stringify(formDataArray);
 
-        fetch(`${process.env.VUE_APP_BACKEND_URL}/modify`, {
+        fetch(`${process.env.VUE_APP_BACKEND_URL}/asset/modify`, {
               method: 'POST',
               mode: 'cors',
               headers: { 'Content-Type': 'application/json' },

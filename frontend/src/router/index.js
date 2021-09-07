@@ -6,12 +6,12 @@ import AssetModify from '../views/AssetModify';
 
 const routes = [
   {
-    path: '/create',
+    path: '/asset/create',
     name: 'Asset Creation',
     component: AssetCreate
   },
   {
-    path: '/modify/:assetID',
+    path: '/asset/modify/:assetID',
     name: 'Asset Modification',
     component: AssetModify,
     props: true

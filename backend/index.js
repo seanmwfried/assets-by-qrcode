@@ -11,8 +11,6 @@ let database;
 
 initDB();
 
-//qrcode.toDataURL()
-
 app.use(express.static('../frontend/'));
 app.use(express.urlencoded());
 app.use(express.json());
@@ -32,26 +30,33 @@ app.post('/asset/create', (req, res) => {
 	});
 });
 
+app.post('/asset/modify', (req, res) => {
+  modifyAsset(req.body).then((result) => {
+    console.log('/asset/modify returning', result);
+    res.end(result);
+  })
+});
+
+app.post('/asset/delete', (req, res) => {
+  console.log(req.body);
+  deleteAsset(req.body).then((result) => {
+    console.log('/asset/delete returning', result);
+    res.end(result);
+  })
+});
+
 app.post('/asset', (req, res) => {
   console.log(req.body);
 	getAsset(req.body.assetID).then((result) => {
     //Don't send password to front end!
     delete result.asset.password;
     //Create QRCode then send response
-		qrcode.toDataURL(`http://${ip}:${frontendPort}/asset/${result.asset._id.toString()}`, (err, url) => {
+		qrcode.toDataURL(`http://${ip}:${frontendPort}/asset/${result.asset._id.toString()}`, (_, url) => {
 			result.asset.qrData = url;
 			const resultString = JSON.stringify(result);
 			console.log('/asset returning', result);
 			res.end(resultString);
 		});
-	})
-});
-
-app.post('/modify', (req, res) => {
-  console.log(req.body);
-	modifyAsset(req.body).then((result) => {
-    console.log('/asset returning', result);
-		res.end(result);
 	})
 });
 
@@ -68,6 +73,11 @@ async function createAsset(data) {
 
 async function modifyAsset(data) {
   const result = await db.modifyAsset(database, data);
+  return result;
+}
+
+async function deleteAsset(data) {
+  const result = await db.deleteAsset(Database, data);
   return result;
 }
 

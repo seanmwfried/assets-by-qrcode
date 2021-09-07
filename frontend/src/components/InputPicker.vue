@@ -71,9 +71,15 @@ export default {
 
   mounted(){
     //Initialize values with prop object if available
-    this.selectValue = this.inData.inputType || 'text';
-    this.inputName   = this.inData.inputLabel || '';
-    this.inputValue  = this.inData.inputValue || '';
+    if(this.inData){
+      this.selectValue = this.inData.inputType || 'text';
+      this.inputName   = this.inData.inputLabel || '';
+      this.inputValue  = this.inData.inputValue || '';
+    } else {
+      this.selectValue = 'text';
+      this.inputName   = '';
+      this.inputValue  = '';
+    }
   }
 }
 </script>

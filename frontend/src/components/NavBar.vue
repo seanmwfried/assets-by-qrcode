@@ -5,7 +5,7 @@
       </template>
       <template #right>
           <va-navbar-item>
-              <va-button color="rgb(38, 40, 36)" to="/create">
+              <va-button color="rgb(38, 40, 36)" to="/asset/create">
                   Create Asset
               </va-button>
           </va-navbar-item>

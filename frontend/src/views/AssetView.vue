@@ -31,7 +31,7 @@
             {{assetName}}
           </div>
           <div class="asset-actions">
-            <va-button color="#baffc9" text-color="#000" :to="'/modify/' + assetID">Modify</va-button>
+            <va-button color="#baffc9" text-color="#000" :to="'/asset/modify/' + assetID">Modify</va-button>
             <va-button color="#baffc9" text-color="#000" @click="showModal = true">Delete</va-button>
           </div>
         </div>
@@ -76,8 +76,8 @@
     methods: {
       deleteAsset(){
         this.showModal = false;
-        //Send asset ID and password attempt
         
+        //Send asset ID and password attempt        
         const formData = JSON.stringify({
           _id: this.assetID,
           passwordAttempt: this.passwordInput

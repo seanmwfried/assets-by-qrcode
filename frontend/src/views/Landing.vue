@@ -12,7 +12,7 @@
           <p>To get started, click the button below, and you'll be taken to the SPA to begin inputting information. Once completed, you'll be taken to your new asset's page, along with a QR code to be used for quick access to that asset's information.</p>
         </va-card-content>
         <div class="button-container">
-          <va-button to="/create" color="#baffc9" text-color="#000">Get Started</va-button>
+          <va-button to="/asset/create" color="#baffc9" text-color="#000">Get Started</va-button>
         </div>
       </va-card>
     </div>
